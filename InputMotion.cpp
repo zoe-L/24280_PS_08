@@ -2,6 +2,7 @@
 #include <sstream>
 #include <string>
 #include "InputMotion.h"
+#include <iostream>
 
 InputMotion::InputMotion()
 {
@@ -58,5 +59,17 @@ void InputMotion::writeFile(ostream& output)
 float InputMotion::getDeltaTheta()
 {
 	// RPM * (360 deg/rv) / (60 sec/min) = deg/sec
-	return rotationSpeed * 6. * interval;
+	timeElapse();
+	rotationSpeed = 0;
+	for (int i = 0; i < speedExpression.size(); i++) {
+		rotationSpeed += speedExpression[i] * pow(time, i);
+	}
+	return rotationSpeed * 6 * interval;
+}
+
+void InputMotion::setSpeed(vector<float> poly)
+{
+	speedExpression = poly;
+	resetTime();
+	timeElapse();
 }

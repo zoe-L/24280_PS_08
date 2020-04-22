@@ -5,11 +5,12 @@ PS07. Due Apr. 16, 2020
 
 GUI for managing and visualizing a linkage system simulation
 
-*/#pragma once
+*/
+#pragma once
 
 #include "LinkEditor.h"
 #include "LinkageSystem.h"
-
+#include <iostream>
 #include "FlickerLessPanel.h"
 // using flickerless panel makes the form design view not work.
 // to use flickerless panel or allow the design view, use one of these
@@ -1047,14 +1048,29 @@ namespace ps07LinkageSimulator {
 	private: void getRPMFromBox() {
 		if (textBoxRPM->Text != "") {
 			try {
-				float currValue;
+				string input = StringPlus::convertString(textBoxRPM->Text);
+				vector<float> poly = {};
+				string currStr = "";
+				string currChar;
 
-				currValue = Convert::ToDouble(textBoxRPM->Text);
+				for (int i = 0; i < input.size(); i++) {
+					currChar = input[i];
+					if (currChar.compare(",")) {
+						currStr = currStr + input[i];
+						if (i == input.size() - 1) {
+							poly.push_back(stod(currStr));
+						}
+					}
+					else {
+						poly.push_back(stod(currStr));
+						currStr = "";
+					}
+				}
+
 				if (theSystem->getMotion() == nullptr) {
 					theSystem->setMotion(new InputMotion);
 				}
-				theSystem->getMotion()->setSpeed(currValue);
-
+				theSystem->getMotion()->setSpeed(poly);
 			}
 			catch (Exception ^ excep) {
 				MessageBox::Show(this, "Value -> " + textBoxRPM->Text
