@@ -12,6 +12,7 @@ GUI for managing and visualizing a linkage system simulation
 #include "LinkageSystem.h"
 #include <iostream>
 #include "FlickerLessPanel.h"
+
 // using flickerless panel makes the form design view not work.
 // to use flickerless panel or allow the design view, use one of these
 // in InitComponents() function
@@ -60,6 +61,7 @@ namespace ps07LinkageSimulator {
 			comboBoxGrid->SelectedIndex = 0;
 
 		}
+		bool resetSpeed = false;
 
 	protected:
 		/// <summary>
@@ -85,6 +87,7 @@ namespace ps07LinkageSimulator {
 		bool editPinModeIsOn = false;
 		int crankPinEdit = -1, couplerPinEdit = -1, rockerPinEdit = -1;
 		bool simulationIsOn = false;
+
 
 	private: System::Windows::Forms::Panel^ mainPanel;
 	private: System::Windows::Forms::Button^ buttonHelp;
@@ -125,6 +128,10 @@ namespace ps07LinkageSimulator {
 	private: System::Windows::Forms::CheckBox^ checkBoxAxes;
 	private: System::Windows::Forms::CheckBox^ checkBoxScale;
 
+	private: System::Windows::Forms::CheckBox^ ResetSpeedBox;
+
+
+
 
 
 
@@ -143,7 +150,6 @@ namespace ps07LinkageSimulator {
 		{
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->mainPanel = (gcnew System::Windows::Forms::Panel());
-			//this->mainPanel = (gcnew FlickerLessPanel()); 
 			this->buttonHelp = (gcnew System::Windows::Forms::Button());
 			this->buttonResetView = (gcnew System::Windows::Forms::Button());
 			this->buttonSave = (gcnew System::Windows::Forms::Button());
@@ -174,6 +180,7 @@ namespace ps07LinkageSimulator {
 			this->comboBoxGrid = (gcnew System::Windows::Forms::ComboBox());
 			this->checkBoxAxes = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBoxScale = (gcnew System::Windows::Forms::CheckBox());
+			this->ResetSpeedBox = (gcnew System::Windows::Forms::CheckBox());
 			this->panel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -183,9 +190,10 @@ namespace ps07LinkageSimulator {
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->label1->ForeColor = System::Drawing::Color::Fuchsia;
-			this->label1->Location = System::Drawing::Point(12, 9);
+			this->label1->Location = System::Drawing::Point(24, 17);
+			this->label1->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(201, 25);
+			this->label1->Size = System::Drawing::Size(372, 48);
 			this->label1->TabIndex = 1;
 			this->label1->Text = L"Linkage Simulator";
 			// 
@@ -196,9 +204,10 @@ namespace ps07LinkageSimulator {
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->mainPanel->BackColor = System::Drawing::Color::White;
 			this->mainPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->mainPanel->Location = System::Drawing::Point(127, 46);
+			this->mainPanel->Location = System::Drawing::Point(254, 88);
+			this->mainPanel->Margin = System::Windows::Forms::Padding(6);
 			this->mainPanel->Name = L"mainPanel";
-			this->mainPanel->Size = System::Drawing::Size(651, 452);
+			this->mainPanel->Size = System::Drawing::Size(1300, 867);
 			this->mainPanel->TabIndex = 2;
 			this->mainPanel->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &LinkageSimulator::mainPanel_Paint);
 			this->mainPanel->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &LinkageSimulator::mainPanel_MouseDown);
@@ -210,9 +219,10 @@ namespace ps07LinkageSimulator {
 			// buttonHelp
 			// 
 			this->buttonHelp->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
-			this->buttonHelp->Location = System::Drawing::Point(699, 12);
+			this->buttonHelp->Location = System::Drawing::Point(1398, 23);
+			this->buttonHelp->Margin = System::Windows::Forms::Padding(6);
 			this->buttonHelp->Name = L"buttonHelp";
-			this->buttonHelp->Size = System::Drawing::Size(70, 25);
+			this->buttonHelp->Size = System::Drawing::Size(140, 48);
 			this->buttonHelp->TabIndex = 16;
 			this->buttonHelp->Text = L"Help";
 			this->buttonHelp->UseVisualStyleBackColor = true;
@@ -220,9 +230,10 @@ namespace ps07LinkageSimulator {
 			// buttonResetView
 			// 
 			this->buttonResetView->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
-			this->buttonResetView->Location = System::Drawing::Point(626, 12);
+			this->buttonResetView->Location = System::Drawing::Point(1252, 23);
+			this->buttonResetView->Margin = System::Windows::Forms::Padding(6);
 			this->buttonResetView->Name = L"buttonResetView";
-			this->buttonResetView->Size = System::Drawing::Size(70, 25);
+			this->buttonResetView->Size = System::Drawing::Size(140, 48);
 			this->buttonResetView->TabIndex = 15;
 			this->buttonResetView->Text = L"Reset View";
 			this->buttonResetView->UseVisualStyleBackColor = true;
@@ -230,9 +241,10 @@ namespace ps07LinkageSimulator {
 			// 
 			// buttonSave
 			// 
-			this->buttonSave->Location = System::Drawing::Point(71, 46);
+			this->buttonSave->Location = System::Drawing::Point(142, 88);
+			this->buttonSave->Margin = System::Windows::Forms::Padding(6);
 			this->buttonSave->Name = L"buttonSave";
-			this->buttonSave->Size = System::Drawing::Size(50, 30);
+			this->buttonSave->Size = System::Drawing::Size(100, 58);
 			this->buttonSave->TabIndex = 14;
 			this->buttonSave->Text = L"Save";
 			this->buttonSave->UseVisualStyleBackColor = true;
@@ -240,9 +252,10 @@ namespace ps07LinkageSimulator {
 			// 
 			// buttonLoad
 			// 
-			this->buttonLoad->Location = System::Drawing::Point(8, 46);
+			this->buttonLoad->Location = System::Drawing::Point(16, 88);
+			this->buttonLoad->Margin = System::Windows::Forms::Padding(6);
 			this->buttonLoad->Name = L"buttonLoad";
-			this->buttonLoad->Size = System::Drawing::Size(52, 30);
+			this->buttonLoad->Size = System::Drawing::Size(104, 58);
 			this->buttonLoad->TabIndex = 13;
 			this->buttonLoad->Text = L"Load";
 			this->buttonLoad->UseVisualStyleBackColor = true;
@@ -252,9 +265,10 @@ namespace ps07LinkageSimulator {
 			// 
 			this->feedbackLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 			this->feedbackLabel->AutoSize = true;
-			this->feedbackLabel->Location = System::Drawing::Point(12, 499);
+			this->feedbackLabel->Location = System::Drawing::Point(24, 960);
+			this->feedbackLabel->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->feedbackLabel->Name = L"feedbackLabel";
-			this->feedbackLabel->Size = System::Drawing::Size(28, 13);
+			this->feedbackLabel->Size = System::Drawing::Size(57, 25);
 			this->feedbackLabel->TabIndex = 17;
 			this->feedbackLabel->Text = L" - - - ";
 			// 
@@ -265,36 +279,40 @@ namespace ps07LinkageSimulator {
 			this->coordLabel->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(255)),
 				static_cast<System::Int32>(static_cast<System::Byte>(128)));
 			this->coordLabel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->coordLabel->Location = System::Drawing::Point(369, 18);
+			this->coordLabel->Location = System::Drawing::Point(738, 35);
+			this->coordLabel->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->coordLabel->Name = L"coordLabel";
-			this->coordLabel->Size = System::Drawing::Size(92, 15);
+			this->coordLabel->Size = System::Drawing::Size(181, 27);
 			this->coordLabel->TabIndex = 18;
 			this->coordLabel->Text = L"coordinate popup";
 			this->coordLabel->TextAlign = System::Drawing::ContentAlignment::BottomRight;
 			// 
 			// buttonDeleteCrank
 			// 
-			this->buttonDeleteCrank->Location = System::Drawing::Point(85, 94);
+			this->buttonDeleteCrank->Location = System::Drawing::Point(170, 181);
+			this->buttonDeleteCrank->Margin = System::Windows::Forms::Padding(6);
 			this->buttonDeleteCrank->Name = L"buttonDeleteCrank";
-			this->buttonDeleteCrank->Size = System::Drawing::Size(36, 19);
+			this->buttonDeleteCrank->Size = System::Drawing::Size(72, 37);
 			this->buttonDeleteCrank->TabIndex = 14;
 			this->buttonDeleteCrank->Text = L"Del";
 			this->buttonDeleteCrank->UseVisualStyleBackColor = true;
 			// 
 			// buttonDeleteCoupler
 			// 
-			this->buttonDeleteCoupler->Location = System::Drawing::Point(85, 142);
+			this->buttonDeleteCoupler->Location = System::Drawing::Point(170, 273);
+			this->buttonDeleteCoupler->Margin = System::Windows::Forms::Padding(6);
 			this->buttonDeleteCoupler->Name = L"buttonDeleteCoupler";
-			this->buttonDeleteCoupler->Size = System::Drawing::Size(36, 19);
+			this->buttonDeleteCoupler->Size = System::Drawing::Size(72, 37);
 			this->buttonDeleteCoupler->TabIndex = 14;
 			this->buttonDeleteCoupler->Text = L"Del";
 			this->buttonDeleteCoupler->UseVisualStyleBackColor = true;
 			// 
 			// buttonDeleteRocker
 			// 
-			this->buttonDeleteRocker->Location = System::Drawing::Point(85, 194);
+			this->buttonDeleteRocker->Location = System::Drawing::Point(170, 373);
+			this->buttonDeleteRocker->Margin = System::Windows::Forms::Padding(6);
 			this->buttonDeleteRocker->Name = L"buttonDeleteRocker";
-			this->buttonDeleteRocker->Size = System::Drawing::Size(36, 19);
+			this->buttonDeleteRocker->Size = System::Drawing::Size(72, 37);
 			this->buttonDeleteRocker->TabIndex = 14;
 			this->buttonDeleteRocker->Text = L"Del";
 			this->buttonDeleteRocker->UseVisualStyleBackColor = true;
@@ -302,36 +320,40 @@ namespace ps07LinkageSimulator {
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(5, 97);
+			this->label2->Location = System::Drawing::Point(10, 187);
+			this->label2->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(35, 13);
+			this->label2->Size = System::Drawing::Size(69, 25);
 			this->label2->TabIndex = 19;
 			this->label2->Text = L"Crank";
 			// 
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(5, 145);
+			this->label3->Location = System::Drawing::Point(10, 279);
+			this->label3->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(43, 13);
+			this->label3->Size = System::Drawing::Size(87, 25);
 			this->label3->TabIndex = 19;
 			this->label3->Text = L"Coupler";
 			// 
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(5, 197);
+			this->label4->Location = System::Drawing::Point(10, 379);
+			this->label4->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(42, 13);
+			this->label4->Size = System::Drawing::Size(80, 25);
 			this->label4->TabIndex = 19;
 			this->label4->Text = L"Rocker";
 			// 
 			// labelCrankID
 			// 
 			this->labelCrankID->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->labelCrankID->Location = System::Drawing::Point(6, 114);
+			this->labelCrankID->Location = System::Drawing::Point(12, 219);
+			this->labelCrankID->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->labelCrankID->Name = L"labelCrankID";
-			this->labelCrankID->Size = System::Drawing::Size(115, 20);
+			this->labelCrankID->Size = System::Drawing::Size(228, 37);
 			this->labelCrankID->TabIndex = 21;
 			this->labelCrankID->Text = L" ";
 			this->labelCrankID->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
@@ -339,9 +361,10 @@ namespace ps07LinkageSimulator {
 			// labelCouplerID
 			// 
 			this->labelCouplerID->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->labelCouplerID->Location = System::Drawing::Point(6, 164);
+			this->labelCouplerID->Location = System::Drawing::Point(12, 315);
+			this->labelCouplerID->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->labelCouplerID->Name = L"labelCouplerID";
-			this->labelCouplerID->Size = System::Drawing::Size(115, 20);
+			this->labelCouplerID->Size = System::Drawing::Size(228, 37);
 			this->labelCouplerID->TabIndex = 21;
 			this->labelCouplerID->Text = L" ";
 			this->labelCouplerID->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
@@ -349,18 +372,20 @@ namespace ps07LinkageSimulator {
 			// labelRockerID
 			// 
 			this->labelRockerID->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->labelRockerID->Location = System::Drawing::Point(6, 216);
+			this->labelRockerID->Location = System::Drawing::Point(12, 415);
+			this->labelRockerID->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->labelRockerID->Name = L"labelRockerID";
-			this->labelRockerID->Size = System::Drawing::Size(115, 20);
+			this->labelRockerID->Size = System::Drawing::Size(228, 37);
 			this->labelRockerID->TabIndex = 21;
 			this->labelRockerID->Text = L" ";
 			this->labelRockerID->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			// 
 			// buttonEditCrank
 			// 
-			this->buttonEditCrank->Location = System::Drawing::Point(48, 94);
+			this->buttonEditCrank->Location = System::Drawing::Point(96, 181);
+			this->buttonEditCrank->Margin = System::Windows::Forms::Padding(6);
 			this->buttonEditCrank->Name = L"buttonEditCrank";
-			this->buttonEditCrank->Size = System::Drawing::Size(36, 19);
+			this->buttonEditCrank->Size = System::Drawing::Size(72, 37);
 			this->buttonEditCrank->TabIndex = 14;
 			this->buttonEditCrank->Text = L"Edit";
 			this->buttonEditCrank->UseVisualStyleBackColor = true;
@@ -368,9 +393,10 @@ namespace ps07LinkageSimulator {
 			// 
 			// buttonEditCoupler
 			// 
-			this->buttonEditCoupler->Location = System::Drawing::Point(48, 142);
+			this->buttonEditCoupler->Location = System::Drawing::Point(96, 273);
+			this->buttonEditCoupler->Margin = System::Windows::Forms::Padding(6);
 			this->buttonEditCoupler->Name = L"buttonEditCoupler";
-			this->buttonEditCoupler->Size = System::Drawing::Size(36, 19);
+			this->buttonEditCoupler->Size = System::Drawing::Size(72, 37);
 			this->buttonEditCoupler->TabIndex = 14;
 			this->buttonEditCoupler->Text = L"Edit";
 			this->buttonEditCoupler->UseVisualStyleBackColor = true;
@@ -378,9 +404,10 @@ namespace ps07LinkageSimulator {
 			// 
 			// buttonEditRocker
 			// 
-			this->buttonEditRocker->Location = System::Drawing::Point(48, 194);
+			this->buttonEditRocker->Location = System::Drawing::Point(96, 373);
+			this->buttonEditRocker->Margin = System::Windows::Forms::Padding(6);
 			this->buttonEditRocker->Name = L"buttonEditRocker";
-			this->buttonEditRocker->Size = System::Drawing::Size(36, 19);
+			this->buttonEditRocker->Size = System::Drawing::Size(72, 37);
 			this->buttonEditRocker->TabIndex = 14;
 			this->buttonEditRocker->Text = L"Edit";
 			this->buttonEditRocker->UseVisualStyleBackColor = true;
@@ -390,9 +417,10 @@ namespace ps07LinkageSimulator {
 			// 
 			this->labelEditPins->BackColor = System::Drawing::Color::Lime;
 			this->labelEditPins->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->labelEditPins->Location = System::Drawing::Point(5, 248);
+			this->labelEditPins->Location = System::Drawing::Point(10, 477);
+			this->labelEditPins->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->labelEditPins->Name = L"labelEditPins";
-			this->labelEditPins->Size = System::Drawing::Size(115, 28);
+			this->labelEditPins->Size = System::Drawing::Size(228, 52);
 			this->labelEditPins->TabIndex = 22;
 			this->labelEditPins->Text = L"Edit Pins";
 			this->labelEditPins->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -404,9 +432,10 @@ namespace ps07LinkageSimulator {
 				static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)));
 			this->labelRunSimulation->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->labelRunSimulation->ForeColor = System::Drawing::Color::Gray;
-			this->labelRunSimulation->Location = System::Drawing::Point(6, 445);
+			this->labelRunSimulation->Location = System::Drawing::Point(12, 856);
+			this->labelRunSimulation->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->labelRunSimulation->Name = L"labelRunSimulation";
-			this->labelRunSimulation->Size = System::Drawing::Size(113, 28);
+			this->labelRunSimulation->Size = System::Drawing::Size(224, 52);
 			this->labelRunSimulation->TabIndex = 24;
 			this->labelRunSimulation->Text = L"Start Simulation";
 			this->labelRunSimulation->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -415,17 +444,19 @@ namespace ps07LinkageSimulator {
 			// label5
 			// 
 			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(9, 313);
+			this->label5->Location = System::Drawing::Point(18, 602);
+			this->label5->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(31, 13);
+			this->label5->Size = System::Drawing::Size(59, 25);
 			this->label5->TabIndex = 25;
 			this->label5->Text = L"RPM";
 			// 
 			// textBoxRPM
 			// 
-			this->textBoxRPM->Location = System::Drawing::Point(46, 24);
+			this->textBoxRPM->Location = System::Drawing::Point(92, 46);
+			this->textBoxRPM->Margin = System::Windows::Forms::Padding(6);
 			this->textBoxRPM->Name = L"textBoxRPM";
-			this->textBoxRPM->Size = System::Drawing::Size(64, 20);
+			this->textBoxRPM->Size = System::Drawing::Size(124, 31);
 			this->textBoxRPM->TabIndex = 26;
 			this->textBoxRPM->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &LinkageSimulator::textBoxRPM_KeyDown);
 			this->textBoxRPM->Leave += gcnew System::EventHandler(this, &LinkageSimulator::textBoxRPM_Leave);
@@ -433,17 +464,19 @@ namespace ps07LinkageSimulator {
 			// label7
 			// 
 			this->label7->AutoSize = true;
-			this->label7->Location = System::Drawing::Point(9, 339);
+			this->label7->Location = System::Drawing::Point(18, 652);
+			this->label7->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(42, 13);
+			this->label7->Size = System::Drawing::Size(82, 25);
 			this->label7->TabIndex = 25;
 			this->label7->Text = L"Interval";
 			// 
 			// textBoxInterval
 			// 
-			this->textBoxInterval->Location = System::Drawing::Point(46, 50);
+			this->textBoxInterval->Location = System::Drawing::Point(92, 96);
+			this->textBoxInterval->Margin = System::Windows::Forms::Padding(6);
 			this->textBoxInterval->Name = L"textBoxInterval";
-			this->textBoxInterval->Size = System::Drawing::Size(64, 20);
+			this->textBoxInterval->Size = System::Drawing::Size(124, 31);
 			this->textBoxInterval->TabIndex = 26;
 			this->textBoxInterval->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &LinkageSimulator::textBoxInterval_KeyDown);
 			this->textBoxInterval->Leave += gcnew System::EventHandler(this, &LinkageSimulator::textBoxInterval_Leave);
@@ -453,9 +486,10 @@ namespace ps07LinkageSimulator {
 			this->label6->AutoSize = true;
 			this->label6->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label6->Location = System::Drawing::Point(6, 292);
+			this->label6->Location = System::Drawing::Point(12, 562);
+			this->label6->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(112, 13);
+			this->label6->Size = System::Drawing::Size(213, 26);
 			this->label6->TabIndex = 25;
 			this->label6->Text = L"Motion Parameters";
 			// 
@@ -464,16 +498,18 @@ namespace ps07LinkageSimulator {
 			this->panel1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->panel1->Controls->Add(this->textBoxInterval);
 			this->panel1->Controls->Add(this->textBoxRPM);
-			this->panel1->Location = System::Drawing::Point(5, 286);
+			this->panel1->Location = System::Drawing::Point(10, 550);
+			this->panel1->Margin = System::Windows::Forms::Padding(6);
 			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(115, 82);
+			this->panel1->Size = System::Drawing::Size(228, 156);
 			this->panel1->TabIndex = 28;
 			// 
 			// buttonStep
 			// 
-			this->buttonStep->Location = System::Drawing::Point(72, 419);
+			this->buttonStep->Location = System::Drawing::Point(144, 806);
+			this->buttonStep->Margin = System::Windows::Forms::Padding(6);
 			this->buttonStep->Name = L"buttonStep";
-			this->buttonStep->Size = System::Drawing::Size(45, 23);
+			this->buttonStep->Size = System::Drawing::Size(90, 44);
 			this->buttonStep->TabIndex = 29;
 			this->buttonStep->Text = L"Step";
 			this->buttonStep->UseVisualStyleBackColor = true;
@@ -488,10 +524,11 @@ namespace ps07LinkageSimulator {
 				L"No Grid", L"Ortho Grid", L"Polar on Pin A",
 					L"Polar on Pin B", L"Polar on Pin C", L"Polar on Pin D"
 			});
-			this->comboBoxGrid->Location = System::Drawing::Point(569, 500);
+			this->comboBoxGrid->Location = System::Drawing::Point(1138, 962);
+			this->comboBoxGrid->Margin = System::Windows::Forms::Padding(6);
 			this->comboBoxGrid->MaxDropDownItems = 3;
 			this->comboBoxGrid->Name = L"comboBoxGrid";
-			this->comboBoxGrid->Size = System::Drawing::Size(88, 20);
+			this->comboBoxGrid->Size = System::Drawing::Size(172, 30);
 			this->comboBoxGrid->TabIndex = 21;
 			this->comboBoxGrid->SelectedIndexChanged += gcnew System::EventHandler(this, &LinkageSimulator::comboBoxGrid_SelectedIndexChanged);
 			// 
@@ -499,9 +536,10 @@ namespace ps07LinkageSimulator {
 			// 
 			this->checkBoxAxes->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
 			this->checkBoxAxes->AutoSize = true;
-			this->checkBoxAxes->Location = System::Drawing::Point(672, 502);
+			this->checkBoxAxes->Location = System::Drawing::Point(1350, 969);
+			this->checkBoxAxes->Margin = System::Windows::Forms::Padding(6);
 			this->checkBoxAxes->Name = L"checkBoxAxes";
-			this->checkBoxAxes->Size = System::Drawing::Size(49, 17);
+			this->checkBoxAxes->Size = System::Drawing::Size(92, 29);
 			this->checkBoxAxes->TabIndex = 7;
 			this->checkBoxAxes->Text = L"Axes";
 			this->checkBoxAxes->UseVisualStyleBackColor = true;
@@ -511,21 +549,34 @@ namespace ps07LinkageSimulator {
 			// 
 			this->checkBoxScale->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
 			this->checkBoxScale->AutoSize = true;
-			this->checkBoxScale->Location = System::Drawing::Point(725, 501);
+			this->checkBoxScale->Location = System::Drawing::Point(1458, 967);
+			this->checkBoxScale->Margin = System::Windows::Forms::Padding(6);
 			this->checkBoxScale->Name = L"checkBoxScale";
-			this->checkBoxScale->Size = System::Drawing::Size(53, 17);
+			this->checkBoxScale->Size = System::Drawing::Size(98, 29);
 			this->checkBoxScale->TabIndex = 7;
 			this->checkBoxScale->Text = L"Scale";
 			this->checkBoxScale->UseVisualStyleBackColor = true;
 			this->checkBoxScale->CheckedChanged += gcnew System::EventHandler(this, &LinkageSimulator::checkBoxScale_CheckedChanged);
 			// 
+			// ResetSpeedBox
+			// 
+			this->ResetSpeedBox->AutoSize = true;
+			this->ResetSpeedBox->Location = System::Drawing::Point(18, 715);
+			this->ResetSpeedBox->Name = L"ResetSpeedBox";
+			this->ResetSpeedBox->Size = System::Drawing::Size(220, 54);
+			this->ResetSpeedBox->TabIndex = 31;
+			this->ResetSpeedBox->Text = L"Reset speed after \r\none revolution";
+			this->ResetSpeedBox->UseVisualStyleBackColor = true;
+			this->ResetSpeedBox->CheckedChanged += gcnew System::EventHandler(this, &LinkageSimulator::checkBox2_CheckedChanged);
+			// 
 			// LinkageSimulator
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(12, 25);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(192)),
 				static_cast<System::Int32>(static_cast<System::Byte>(128)));
-			this->ClientSize = System::Drawing::Size(783, 521);
+			this->ClientSize = System::Drawing::Size(1566, 1002);
+			this->Controls->Add(this->ResetSpeedBox);
 			this->Controls->Add(this->buttonStep);
 			this->Controls->Add(this->label7);
 			this->Controls->Add(this->label6);
@@ -556,6 +607,7 @@ namespace ps07LinkageSimulator {
 			this->Controls->Add(this->checkBoxScale);
 			this->Controls->Add(this->checkBoxAxes);
 			this->Controls->Add(this->comboBoxGrid);
+			this->Margin = System::Windows::Forms::Padding(6);
 			this->Name = L"LinkageSimulator";
 			this->Text = L"LinkageSimulator";
 			this->MouseWheel += gcnew System::Windows::Forms::MouseEventHandler(this, &LinkageSimulator::LinkageSimulator_MouseWheel);
@@ -1292,7 +1344,19 @@ namespace ps07LinkageSimulator {
 		else
 			feedbackLabel->Text = "Turned off Scale Display";
 	}
-	
 
-};
+
+	private: System::Void checkBox2_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+		resetSpeed = !resetSpeed;
+		try
+		{
+			theSystem->getMotion()->setRepeat(resetSpeed);
+		}
+		catch (const std::exception&)
+		{
+
+		}
+
+	}
+	};
 }

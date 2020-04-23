@@ -59,4 +59,5 @@ public:
 	InputMotion* getMotion() { return itsMotion; }
 	void setMotion(InputMotion* aMotion);
 
+
 };
