@@ -66,7 +66,7 @@ float InputMotion::getDeltaTheta()
 		rotationSpeed += speedExpression[i] * pow(time, i);
 	}
 	crankPos += rotationSpeed * 6 * interval;
-	if (crankPos >= 360) {
+	if (fabs(crankPos) >= 360) {
 		crankPos = 0;
 		if (repeatOn == true) {
 			rotationSpeed = speedExpression[0];
