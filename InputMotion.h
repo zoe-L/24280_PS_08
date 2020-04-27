@@ -17,8 +17,6 @@ protected:
 	float interval; // seconds 
 	float time = 0;
 	vector<float> speedExpression;
-	bool repeatOn = false;
-	float crankPos = 0;
 
 public:
 	InputMotion();
@@ -43,5 +41,4 @@ public:
 	void setInterval(float timeInterval) { interval = timeInterval; }
 	float getSpeed() { return rotationSpeed; }
 	float getInterval() { return interval; }
-	void setRepeat(bool repeat) { repeatOn = repeat; }
 };

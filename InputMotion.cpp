@@ -4,7 +4,6 @@
 #include "InputMotion.h"
 #include <iostream>
 
-
 InputMotion::InputMotion()
 {
 	rotationSpeed = 0.;
@@ -64,14 +63,6 @@ float InputMotion::getDeltaTheta()
 	rotationSpeed = 0;
 	for (int i = 0; i < speedExpression.size(); i++) {
 		rotationSpeed += speedExpression[i] * pow(time, i);
-	}
-	crankPos += rotationSpeed * 6 * interval;
-	if (fabs(crankPos) >= 360) {
-		crankPos = 0;
-		if (repeatOn == true) {
-			rotationSpeed = speedExpression[0];
-			resetTime();
-		}
 	}
 	return rotationSpeed * 6 * interval;
 }
